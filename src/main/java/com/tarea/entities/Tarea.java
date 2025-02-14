@@ -1,13 +1,23 @@
 package com.tarea.entities;
 
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "Tarea")
 public class Tarea {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
+    @Column(name = "nombre")
     String name;
+    @Column(name = "descripcion")
     String description;
+    @Column(name = "estado")
     Boolean status;
+    @Column(name = "fecha")
     LocalDate fecha;
 
     public Tarea() {
