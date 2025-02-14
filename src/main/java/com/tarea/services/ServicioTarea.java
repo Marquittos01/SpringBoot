@@ -2,9 +2,11 @@ package com.tarea.services;
 
 import com.tarea.entities.Tarea;
 import com.tarea.repositories.RepositoryTarea;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ServicioTarea {
 
     private RepositoryTarea repositoryTarea;
