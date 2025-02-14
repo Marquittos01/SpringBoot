@@ -7,15 +7,15 @@ import java.util.List;
 
 public class ServicioTarea {
 
-    private RepositoryTarea repository;
+    private RepositoryTarea repositoryTarea;
     Tarea tarea;
 
-    public ServicioTarea(RepositoryTarea repository) {
-        this.repository = repository;
+    public ServicioTarea(RepositoryTarea repositoryTarea) {
+        this.repositoryTarea = repositoryTarea;
     }
 
     public List<Tarea> getAllTareas() {
-        return this.repository.findAll();
+        return this.repositoryTarea.findAll();
     }
 
     public Tarea getTarea() {
