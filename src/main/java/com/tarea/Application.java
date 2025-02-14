@@ -11,9 +11,6 @@ public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
-
-		Tarea t = new Tarea(12L,"gred","urnicmde", true, LocalDate.now());
-
 	}
 
 }
