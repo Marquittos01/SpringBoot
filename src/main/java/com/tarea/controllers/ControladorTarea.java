@@ -10,17 +10,14 @@ import java.util.List;
 @RestController
 public class ControladorTarea {
 
-    private Tarea tarea;
     private ServicioTarea serviciotarea;
 
-    public ControladorTarea(){
-        this.tarea = this.serviciotarea.getTarea();
+    public ControladorTarea(ServicioTarea serviciotarea){
+        this.serviciotarea = serviciotarea;
     }
 
     @GetMapping("/tareas")
     public List<Tarea> getAllTareas(){
         return this.serviciotarea.getAllTareas();
     }
-
-
 }
