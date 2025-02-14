@@ -12,8 +12,8 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 
-		Tarea tarea = new Tarea();
-		Tarea tarea2 = new Tarea(1L,"caballa","fresca",true, LocalDate.now());
+		Tarea t = new Tarea(12L,"gred","urnicmde", true, LocalDate.now());
+
 	}
 
 }
