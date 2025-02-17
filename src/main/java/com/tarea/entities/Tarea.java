@@ -1,11 +1,12 @@
 package com.tarea.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name="Tarea")
+@Table(name="tarea")
 public class Tarea {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
