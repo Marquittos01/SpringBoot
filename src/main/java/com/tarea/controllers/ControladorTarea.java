@@ -17,14 +17,13 @@ public class ControladorTarea {
 
 
     @GetMapping("/tarea")
-    public List<Tarea> getAllTareas(){
+    public List<Tarea> getAllTareas(@RequestParam (required=false) Long id){
+        if(id!= null){
+            return List.of(this.serviciotarea.getTarea(id));
+        }
         return this.serviciotarea.getAllTareas();
     }
 
-    @GetMapping("/tarea/{id}")
-    public Tarea getTarea(@PathVariable Long id){
-        return this.serviciotarea.getTarea(id);
-    }
 
     @PostMapping("/tarea")
     public Tarea createTarea(@RequestBody Tarea tarea) {
