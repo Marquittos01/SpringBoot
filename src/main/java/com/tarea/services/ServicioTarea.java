@@ -10,7 +10,6 @@ import java.util.List;
 public class ServicioTarea {
 
     private RepositoryTarea repositoryTarea;
-    Tarea tarea;
 
     public ServicioTarea(RepositoryTarea repositoryTarea) {
         this.repositoryTarea = repositoryTarea;
@@ -20,7 +19,8 @@ public class ServicioTarea {
         return this.repositoryTarea.findAll();
     }
 
-    public Tarea getTarea() {
-        return tarea;
+    public Tarea getTarea(Long id) {
+        return this.repositoryTarea.findById(id).get();
     }
 }
+

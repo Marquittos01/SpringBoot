@@ -17,7 +17,8 @@ public class ControladorTarea {
     }
 
     @GetMapping("/tareas")
-    public List<Tarea> getAllTareas(){
+    public List<Tarea> tareas(){
         return this.serviciotarea.getAllTareas();
     }
+
 }
