@@ -4,23 +4,22 @@ import com.tarea.entities.Tarea;
 import com.tarea.services.ServicioTarea;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.service.annotation.GetExchange;
 
 import java.util.List;
 
 @RestController
 public class ControladorTarea {
 
-    private Tarea tarea;
     private ServicioTarea serviciotarea;
 
-    public ControladorTarea(){
-        this.tarea = this.serviciotarea.getTarea();
+    public ControladorTarea(ServicioTarea serviciotarea){
+        this.serviciotarea = serviciotarea;
     }
 
     @GetMapping("/tareas")
-    public List<Tarea> getAllTareas(){
+    public List<Tarea> tareas(){
         return this.serviciotarea.getAllTareas();
     }
-
 
 }

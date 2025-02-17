@@ -1,40 +1,83 @@
 package com.tarea.entities;
 
-
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Tarea")
+@Table(name="Tarea")
 public class Tarea {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
     @Column(name = "nombre")
-    String name;
+    private String nombre;
     @Column(name = "descripcion")
-    String description;
+    private String descripcion;
     @Column(name = "estado")
-    Boolean status;
+    private Boolean estado;
     @Column(name = "fecha")
-    LocalDate fecha;
+    private LocalDate fecha;
+
+    public Tarea(String nombre, String descripcion, Boolean estado, LocalDate fecha) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.estado = estado;
+        this.fecha = fecha;
+    }
 
     public Tarea() {
 
-        this.id = null;
-        this.name = null;
-        this.description = null;
-        this.status = false;
-        this.fecha = LocalDate.now();
-
     }
 
-    public Tarea(Long id, String name, String description, Boolean status, LocalDate fecha) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
+    }
+
+    @Override
+    public String toString() {
+        return "Tarea{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", estado=" + estado +
+                ", fecha=" + fecha +
+                '}';
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
