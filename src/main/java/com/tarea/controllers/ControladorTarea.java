@@ -2,6 +2,8 @@ package com.tarea.controllers;
 
 import com.tarea.entities.Tarea;
 import com.tarea.services.ServicioTarea;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,13 +19,18 @@ public class ControladorTarea {
 
 
     @GetMapping("/tarea")
-    public List<Tarea> getAllTareas(){
-        return this.serviciotarea.getAllTareas();
-    }
-
-    @GetMapping("/tarea/{id}")
-    public Tarea getTarea(@PathVariable Long id){
-        return this.serviciotarea.getTarea(id);
+    public ResponseEntity<?> getTarea(@RequestParam(required = false) Long id) {
+        if (id == null) {
+            return ResponseEntity.ok(this.serviciotarea.getAllTareas());
+        } else {
+            Tarea tarea = this.serviciotarea.getTarea(id);
+            if (tarea != null) {
+                return ResponseEntity.ok(tarea);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Tarea con id " + id + " no encontrada");
+            }
+        }
     }
 
     @PostMapping("/tarea")
