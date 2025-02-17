@@ -4,8 +4,8 @@ import com.tarea.entities.Tarea;
 import com.tarea.repositories.RepositoryTarea;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicioTarea {
@@ -24,17 +24,30 @@ public class ServicioTarea {
         return this.repositoryTarea.findById(id).orElse(null);
     }
 
-    public Tarea insertarTarea(Tarea tarea) {
+    public Tarea createTarea(Tarea tarea) {
         return this.repositoryTarea.save(tarea);
     }
 
-    public boolean actualizarTarea(Long id, String nombre, String descripcion, LocalDate fecha, Boolean estado) {
-        Tarea tarea = this.repositoryTarea.getReferenceById(id);
-        tarea.setNombre(nombre);
-        tarea.setDescripcion(descripcion);
-        tarea.setFecha(fecha);
-        tarea.setEstado(estado);
-        this.repositoryTarea.save(tarea);
-        return true;
+    public Tarea updateTarea(Long id, Tarea tareaDetalles) {
+        Optional<Tarea> tareaOptional = this.repositoryTarea.findById(id);
+
+        if (tareaOptional.isPresent()) {
+            Tarea tarea = tareaOptional.get();
+            tarea.setNombre(tareaDetalles.getNombre());
+            tarea.setDescripcion(tareaDetalles.getDescripcion());
+            tarea.setEstado(tareaDetalles.getEstado());
+            tarea.setFecha(tareaDetalles.getFecha());
+            return this.repositoryTarea.save(tarea);
+        } else {
+            return null;
+        }
     }
+
+    public void deleteTarea(Long id) {
+        if (this.repositoryTarea.existsById(id)) {
+            this.repositoryTarea.deleteById(id);
+        }
+    }
+
 }
+

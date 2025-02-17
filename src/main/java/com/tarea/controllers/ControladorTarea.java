@@ -2,12 +2,8 @@ package com.tarea.controllers;
 
 import com.tarea.entities.Tarea;
 import com.tarea.services.ServicioTarea;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.GetExchange;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -19,8 +15,9 @@ public class ControladorTarea {
         this.serviciotarea = serviciotarea;
     }
 
+
     @GetMapping("/tarea")
-    public List<Tarea> getTareas(){
+    public List<Tarea> getAllTareas(){
         return this.serviciotarea.getAllTareas();
     }
 
@@ -30,12 +27,18 @@ public class ControladorTarea {
     }
 
     @PostMapping("/tarea")
-    public Tarea insertarTarea(@RequestBody Tarea nuevaTarea) {
-        return this.serviciotarea.insertarTarea(nuevaTarea);
+    public Tarea createTarea(@RequestBody Tarea tarea) {
+        return this.serviciotarea.createTarea(tarea);
     }
 
     @PutMapping("/tarea")
-    public boolean modificarTarea(Long id, String nombre, String descripcion, LocalDate fecha, Boolean estado){
-        return this.serviciotarea.actualizarTarea(id, nombre, descripcion,fecha,estado);
+    public Tarea updateTarea(@RequestParam Long id, @RequestBody Tarea tareaDetalles) {
+        return this.serviciotarea.updateTarea(id, tareaDetalles);
     }
+
+    @DeleteMapping("/tarea")
+    public void deleteTarea(@RequestParam Long id) {
+        this.serviciotarea.deleteTarea(id);
+    }
+
 }
