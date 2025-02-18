@@ -17,6 +17,7 @@ public class Tarea {
     private String descripcion;
     @Column(name = "estado")
     private Boolean estado;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "fecha")
     private LocalDate fecha;
 
