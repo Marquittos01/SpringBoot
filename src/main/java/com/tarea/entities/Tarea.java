@@ -2,9 +2,6 @@ package com.tarea.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
@@ -14,17 +11,13 @@ public class Tarea {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 100 caracteres")
-    @NotBlank(message = "El nombre no puede estar vacío")
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "descripcion")
     private String descripcion;
-    @NotEmpty(message = "El estado no puede estar vacío")
     @Column(name = "estado")
     private Boolean estado;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @NotBlank(message = "La fecha no puede estar vacía")
     @Column(name = "fecha")
     private LocalDate fecha;
 
