@@ -43,10 +43,12 @@ public class ServicioTarea {
         }
     }
 
-    public void deleteTarea(Long id) {
+    public boolean deleteTarea(Long id) {
         if (this.repositoryTarea.existsById(id)) {
             this.repositoryTarea.deleteById(id);
+            return true;
         }
+        return false;
     }
 
 }

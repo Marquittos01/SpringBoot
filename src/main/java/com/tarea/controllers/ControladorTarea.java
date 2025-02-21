@@ -28,24 +28,38 @@ public class ControladorTarea {
                 return ResponseEntity.ok(tarea);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Tarea con id " + id + " no encontrada");
+                        .body("Error: Tarea con ID " + id + " no encontrada.");
             }
         }
     }
 
     @PostMapping("/tarea")
-    public Tarea createTarea(@RequestBody Tarea tarea) {
-        return this.serviciotarea.createTarea(tarea);
+    public ResponseEntity<?> createTarea(@RequestBody Tarea tarea) {
+        Tarea nuevaTarea = this.serviciotarea.createTarea(tarea);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Tarea creada con éxito. ID: " + nuevaTarea.getId());
     }
 
     @PutMapping("/tarea")
-    public Tarea updateTarea(@RequestParam Long id, @RequestBody Tarea tareaDetalles) {
-        return this.serviciotarea.updateTarea(id, tareaDetalles);
+    public ResponseEntity<?> updateTarea(@RequestParam Long id, @RequestBody Tarea tareaDetalles) {
+        Tarea tareaActualizada = this.serviciotarea.updateTarea(id, tareaDetalles);
+        if (tareaActualizada != null) {
+            return ResponseEntity.ok("Tarea con ID " + id + " actualizada correctamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Error: Tarea con ID " + id + " no encontrada.");
+        }
     }
 
     @DeleteMapping("/tarea")
-    public void deleteTarea(@RequestParam Long id) {
-        this.serviciotarea.deleteTarea(id);
+    public ResponseEntity<?> deleteTarea(@RequestParam Long id) {
+        boolean eliminado = this.serviciotarea.deleteTarea(id);
+        if (eliminado) {
+            return ResponseEntity.ok("Tarea con ID " + id + " eliminada correctamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Error: No se pudo eliminar. Tarea con ID " + id + " no encontrada.");
+        }
     }
 
 }
