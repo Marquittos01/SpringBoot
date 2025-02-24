@@ -21,7 +21,6 @@ public class Tarea {
     private String nombre;
 
     @Size(max = 100, message = "La descripción debe tener menos de 100 caracteres")
-    @NotBlank(message = "La descripción no puede estar vacío")
     @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "estado")
