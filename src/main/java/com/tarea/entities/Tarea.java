@@ -20,7 +20,7 @@ public class Tarea {
     @Column(name = "nombre")
     private String nombre;
 
-    @Size(max = 100, message = "La descripción debe tener máximo 100 caracteres")
+    @Size(max = 100, message = "La descripción debe tener menos de 100 caracteres")
     @NotBlank(message = "La descripción no puede estar vacío")
     @Column(name = "descripcion")
     private String descripcion;

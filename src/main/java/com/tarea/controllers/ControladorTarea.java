@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Validated
+@RequestMapping("/tarea")
 public class ControladorTarea {
 
     private final ServicioTarea serviciotarea;
@@ -24,68 +23,56 @@ public class ControladorTarea {
         this.serviciotarea = serviciotarea;
     }
 
-    @GetMapping("/tarea")
+    @GetMapping
     public ResponseEntity<?> getTarea(@RequestParam(required = false) Long id) {
         if (id == null) {
-            return ResponseEntity.ok(this.serviciotarea.getAllTareas());
+            List<Tarea> tareas = serviciotarea.getAllTareas();
+            if (tareas.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "No hay tareas registradas."));
+            }
+            return ResponseEntity.ok(tareas);
         } else {
-            Tarea tarea = this.serviciotarea.getTarea(id);
+            Tarea tarea = serviciotarea.getTarea(id);
             if (tarea != null) {
                 return ResponseEntity.ok(tarea);
             } else {
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "Error: Tarea con ID " + id + " no encontrada.");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Tarea con ID " + id + " no encontrada."));
             }
         }
     }
 
-    @PostMapping("/tarea")
+    @PostMapping
     public ResponseEntity<?> createTarea(@Valid @RequestBody Tarea tarea) {
-        Tarea nuevaTarea = this.serviciotarea.createTarea(tarea);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Tarea creada con éxito.");
-        response.put("id", nuevaTarea.getId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        Tarea nuevaTarea = serviciotarea.createTarea(tarea);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("mensaje", "Tarea creada con éxito.", "id", nuevaTarea.getId()));
     }
 
-    @PutMapping("/tarea")
+    @PutMapping
     public ResponseEntity<?> updateTarea(@RequestParam Long id, @Valid @RequestBody Tarea tareaDetalles) {
-        Tarea tareaActualizada = this.serviciotarea.updateTarea(id, tareaDetalles);
+        Tarea tareaActualizada = serviciotarea.updateTarea(id, tareaDetalles);
         if (tareaActualizada != null) {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Tarea con ID " + id + " actualizada correctamente.");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(Map.of("mensaje", "Tarea con ID " + id + " actualizada correctamente."));
         } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Error: Tarea con ID " + id + " no encontrada.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Tarea con ID " + id + " no encontrada."));
         }
     }
 
-    @DeleteMapping("/tarea")
+    @DeleteMapping
     public ResponseEntity<?> deleteTarea(@RequestParam Long id) {
-        boolean eliminado = this.serviciotarea.deleteTarea(id);
+        boolean eliminado = serviciotarea.deleteTarea(id);
         if (eliminado) {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Tarea con ID " + id + " eliminada correctamente.");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(Map.of("mensaje", "Tarea con ID " + id + " eliminada correctamente."));
         } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Error: No se pudo eliminar. Tarea con ID " + id + " no encontrada.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "No se pudo eliminar. Tarea con ID " + id + " no encontrada."));
         }
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return ResponseEntity.badRequest().body(errors);
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            errors.put(error.getField(), error.getDefaultMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 }
