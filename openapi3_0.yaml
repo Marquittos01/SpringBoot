@@ -1,0 +1,195 @@
+openapi: 3.0.3
+info:
+  title: Tareas - OpenAPI 3.0
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: tarea
+    description: Operaciones relacionadas con las tareas
+paths:
+  /tarea:
+    get:
+      tags:
+        - tarea
+      summary: Obtener todas las tareas o una tarea específica por ID
+      description: Retorna una lista de todas las tareas o una tarea específica si se proporciona un ID.
+      operationId: getTarea
+      parameters:
+        - name: id
+          in: query
+          description: ID de la tarea a obtener (opcional)
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Lista de tareas o tarea específica obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Tarea'
+                  - $ref: '#/components/schemas/Tarea'
+        '404':
+          description: Tarea no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Tarea con ID 1 no encontrada."
+        '500':
+          description: Error interno del servidor
+    post:
+      tags:
+        - tarea
+      summary: Crear una nueva tarea
+      description: Crea una nueva tarea y la almacena en la base de datos.
+      operationId: createTarea
+      requestBody:
+        description: Datos de la tarea a crear (no incluye ID)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tarea'
+        required: true
+      responses:
+        '201':
+          description: Tarea creada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    example: "Tarea creada con éxito."
+                  id:
+                    type: integer
+                    format: int64
+                    example: 1  # El id es generado automáticamente y solo se devuelve en la respuesta
+        '400':
+          description: Datos de entrada inválidos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "El nombre no puede estar vacío."
+        '500':
+          description: Error interno del servidor
+    put:
+      tags:
+        - tarea
+      summary: Actualizar una tarea existente
+      description: Actualiza una tarea existente en la base de datos.
+      operationId: updateTarea
+      parameters:
+        - name: id
+          in: query
+          description: ID de la tarea a actualizar
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Datos de la tarea a actualizar (no incluye ID)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tarea'
+        required: true
+      responses:
+        '200':
+          description: Tarea actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    example: "Tarea con ID 1 actualizada correctamente."
+        '404':
+          description: Tarea no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Tarea con ID 1 no encontrada."
+        '500':
+          description: Error interno del servidor
+    delete:
+      tags:
+        - tarea
+      summary: Eliminar una tarea
+      description: Elimina una tarea de la base de datos.
+      operationId: deleteTarea
+      parameters:
+        - name: id
+          in: query
+          description: ID de la tarea a eliminar
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Tarea eliminada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    example: "Tarea con ID 1 eliminada correctamente."
+        '404':
+          description: Tarea no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No se pudo eliminar. Tarea con ID 1 no encontrada."
+        '500':
+          description: Error interno del servidor
+components:
+  schemas:
+    Tarea:
+      type: object
+      properties:
+        nombre:
+          type: string
+          example: "Hola"
+          minLength: 3
+          maxLength: 50
+        descripcion:
+          type: string
+          example: "Descripcion"
+          maxLength: 100
+        estado:
+          type: boolean
+          example: true
+        fecha:
+          type: string
+          format: date
+          example: "2025-02-17"
+      required:
+        - nombre
+        - descripcion
+        - estado
+        - fecha
