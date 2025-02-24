@@ -36,7 +36,8 @@ public class ControladorTarea {
             if (tarea != null) {
                 return ResponseEntity.ok(tarea);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Tarea con ID " + id + " no encontrada."));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "Tarea con ID " + id + " no encontrada."));
             }
         }
     }
@@ -44,7 +45,8 @@ public class ControladorTarea {
     @PostMapping
     public ResponseEntity<?> createTarea(@Valid @RequestBody Tarea tarea) {
         Tarea nuevaTarea = serviciotarea.createTarea(tarea);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("mensaje", "Tarea creada con éxito.", "id", nuevaTarea.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("mensaje", "Tarea creada con éxito.", "id", nuevaTarea.getId()));
     }
 
     @PutMapping
@@ -53,7 +55,8 @@ public class ControladorTarea {
         if (tareaActualizada != null) {
             return ResponseEntity.ok(Map.of("mensaje", "Tarea con ID " + id + " actualizada correctamente."));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Tarea con ID " + id + " no encontrada."));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "Tarea con ID " + id + " no encontrada."));
         }
     }
 
@@ -63,7 +66,8 @@ public class ControladorTarea {
         if (eliminado) {
             return ResponseEntity.ok(Map.of("mensaje", "Tarea con ID " + id + " eliminada correctamente."));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "No se pudo eliminar. Tarea con ID " + id + " no encontrada."));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "No se pudo eliminar. Tarea con ID " + id + " no encontrada."));
         }
     }
 
